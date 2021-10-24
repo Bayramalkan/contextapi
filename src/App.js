@@ -1,25 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
+import UserList from "./UserList";
+import { UserContext } from "./context/UserContext";
 
-function App() {
+//prettier-ignore
+const data = [
+  { id: 1,  name: "Ahmet",   email: "ahmet@site.com",  age: 25,  color: "lightcyan" },
+  { id: 2,  name: "Mehmet",  email: "mehmet@site.com", age: 30,  color: "honeydew"  },
+  { id: 3,  name: "Ali",     email: "ali@site.com",    age: 35,  color: "mistyrose" }
+];
+
+const App = () => {
+  const [users, setUsers] = useState(data);
+
+  const changeColor = (id, color) =>
+    setUsers(
+      users.map(user => (user.id === id ? { ...user, color: color } : user))
+    );
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <UserContext.Provider value={{users,changeColor}}>
+
+        <div className="App">
+          <header>
+            <h1>Welcome!</h1>
+          </header>
+          <UserList/>
+        </div>
+      </UserContext.Provider>
   );
-}
+};
 
 export default App;
